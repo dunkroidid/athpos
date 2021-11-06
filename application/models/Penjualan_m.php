@@ -194,4 +194,68 @@ class Penjualan_m extends CI_Model
             $this->db->insert('piutang', $piutang);
         }
     }
+
+      public function pendingPenjualan()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $kodeinvoice = "POS" . date('YmdHis');
+
+        $this->db->select("RIGHT (penjualan.kode_jual, 7) as kode_jual", false);
+        $this->db->order_by("kode_jual", "DESC");
+        $this->db->limit(1);
+        $query = $this->db->get('penjualan');
+
+        if ($query->num_rows() <> 0) {
+            $data = $query->row();
+            $kode = intval($data->kode_jual) + 1;
+        } else {
+            $kode = 1;
+        }
+        $kodejual = str_pad($kode, 7, "0", STR_PAD_LEFT);
+        $kodepenjualan = "KJ-" . $kodejual;
+        $bulan = date('F');
+        $month = "select id_bulan from bulan where bulan = '$bulan'";
+        $idBulan = implode($this->model->General($month)->row_array());
+        $kembalian = $this->input->post('kembali');
+        $bayar = $this->input->post('bayar');
+
+        if ($kembalian < 0) {
+            $kembalian = 0;
+        }
+
+        $data = array(
+            'ID_USER'     => $this->input->post('kasir'),
+            'ID_CS'         => $this->input->post('cus'),
+            'KODE_JUAL'   => $kodepenjualan,
+            'INVOICE'     => $kodeinvoice,
+            'BAYAR'          => $bayar,
+            'KEMBALI'     => $kembalian,
+            'PPN'         => $this->input->post('nominal_ppn'),
+            'TGL'         => date('Y-m-d H:i:s'),
+            'ID_BULAN'    => $idBulan,
+            'TAHUN'       => date('Y'),
+            'IS_ACTIVE'   => 0,
+
+        );
+        $this->db->insert('penjualan', $data);
+
+
+        $idjual = "select max(id_jual) as id_jual from penjualan";
+        $id = implode($this->model->General($idjual)->row_array());
+        $sql = "update detil_penjualan set id_jual = '$id' where id_jual is null";
+        $this->db->query($sql);
+
+        $det=$this->db->where('id_jual',$id);
+        $det =$this->db->get('detil_penjualan')->result();
+        foreach ($det as $r) {
+            $idbarang= $r->ID_BARANG;
+            $qty_jual= $r->QTY_JUAL;
+            $sql1 = "update barang set stok = stok+$qty_jual where id_barang='$idbarang'";
+            $this->db->query($sql1);
+        }
+
+         
+    }
+
+
 }

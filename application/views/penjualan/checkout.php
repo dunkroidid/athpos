@@ -8,7 +8,7 @@
          <h4 class="modal-title" id="inputKasModal">Pembayaran</h4>
        </div>
        <div class="modal-body">
-         <form class="form-horizontal" method="post" action="<?php echo base_url('penjualan/simpanpenjualan') ?>">
+         <form class="form-horizontal" id="form_chekout" method="post" action="<?php echo base_url('penjualan/simpanpenjualan') ?>">
            <div class="form-group">
              <input type="hidden" class="form-control" name="kasir" id="kasir" readonly>
              <input type="hidden" class="form-control" name="cus" id="cus" readonly>
@@ -44,22 +44,38 @@
            <div class="form-group">
              <label class="control-label col-md-3 col-sm-3 col-xs-12">Bayar</label>
              <div class="col-md-9 col-sm-9 col-xs-12">
-               <input type="text" class="form-control" name="bayar" id="bayar" autocomplete="off">
+               <input type="text" class="form-control" name="bayar" id="bayar" autocomplete="off" value="0">
              </div>
            </div>
            <div class="form-group">
              <label class="control-label col-md-3 col-sm-3 col-xs-12">Kembali</label>
              <div class="col-md-9 col-sm-9 col-xs-12">
-               <input type="text" class="form-control" name="kembali" id="kembali" readonly autocomplete="off">
+               <input type="text" class="form-control"  name="kembali" id="kembali" readonly autocomplete="off">
              </div>
            </div>
            <p class="text-right"><i>Harga diatas sudah termasuk PPN 10%</i></p>
            <div class="modal-footer">
              <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-             <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i> Cetak dan Simpan</button>
+             <button type="submit" class="btn btn-primary" ><i class="fa fa-print"></i> Cetak dan Simpan</button>
+             <button type="button" class="btn btn-warning" onclick="pending()" ><i class="fa fa-cancel"></i> Pending</button>
            </div>
          </form>
        </div>
      </div>
    </div>
  </div>
+ <script type="text/javascript">
+   function pending() {
+     $.ajax({
+      url : '<?php echo base_url('penjualan/pendingpenjualan') ?>',
+      data : $("#form_chekout").serialize(),
+      type : 'post',
+      dataType : 'json',
+      success : function (respon) {
+        if (respon.status) {
+          window.location = '<?php echo base_url('ppenjualan/index') ?>';
+        }
+      }
+     })
+   }
+ </script>

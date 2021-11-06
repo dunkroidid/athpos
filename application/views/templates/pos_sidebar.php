@@ -31,6 +31,7 @@
                       <ul class="nav child_menu">
                         <li><a href="<?php echo base_url('penjualan/index') ?>">Entry Penjualan</a></li>
                         <li><a href="<?php echo base_url('dpenjualan/index') ?>">Daftar Penjualan</a></li>
+                        <li><a href="<?php echo base_url('ppenjualan/index') ?>">Pending Payment</a></li>
                         <?php if ($user['TIPE'] != 'Administrator') : ?>
                           <li style="display:none"><a href="<?php echo base_url('pembelian/index') ?>">Entry Pembelian</a></li>
                           <li style="display:none"><a href="<?php echo base_url('dpembelian/index') ?>">Daftar Pembelian</a></li>

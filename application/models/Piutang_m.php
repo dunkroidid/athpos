@@ -28,7 +28,7 @@ class Piutang_m extends CI_Model {
         );
         $this->db->insert('detil_piutang', $data);
         $get_bayar = "SELECT SUM(nominal) AS nominal FROM detil_piutang WHERE id_piutang = '$id'";
-        $get_jml_piutang = "SELECT jml_piutang FROM piutang WHERE id_piutang = '$id'";
+        $get_jml_piutang = "SELECT jml_piutang,id_jual FROM piutang WHERE id_piutang = '$id'";
         $bayar = implode($this->db->query($get_bayar)->row_array());
         $jml = implode($this->db->query($get_jml_piutang)->row_array());
         $sisa = $jml - $bayar; 

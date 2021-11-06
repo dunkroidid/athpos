@@ -292,6 +292,12 @@ var dPenjualan = $('#daftarjual').DataTable({
 	],
 	"bDestroy": true,
 });
+var pPenjualan = $('#pendingjual').DataTable({
+	"bProcessing": true,
+	"bJQueryUI": true,
+	"sPaginationType": "full_numbers",
+	"bDestroy": true,
+});
 var dPembelian = $('#daftarpembelian').DataTable({
 	"bProcessing": true,
 	"bJQueryUI": true,

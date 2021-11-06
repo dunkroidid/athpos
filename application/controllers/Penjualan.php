@@ -60,7 +60,11 @@ class Penjualan extends CI_Controller
     $this->Penjualan_m->simpanPenjualan();
     redirect('report/struk_penjualan');
   }
-
+  public function pendingpenjualan()
+  {
+    $this->Penjualan_m->pendingPenjualan();
+    echo json_encode(array('status' => TRUE));
+  }
   public function kodeinvoice()
   {
     date_default_timezone_set('Asia/Jakarta');
