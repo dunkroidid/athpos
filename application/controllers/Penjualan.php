@@ -37,6 +37,11 @@ class Penjualan extends CI_Controller
     $this->Penjualan_m->addItem($id, $qty, $subtotal, $harga);
   }
 
+  public function tambahbarangpending($id, $qty, $subtotal, $harga, $id_jual)
+  {
+
+    $this->Penjualan_m->addItemPending($id, $qty, $subtotal, $harga, $id_jual);
+  }
   public function detilitemjual($id = '')
   {
     $sql = "SELECT a.id_detil_jual, b.barcode, b.id_barang, b.nama_barang, b.harga_jual, a.qty_jual, a.diskon, 
@@ -55,6 +60,10 @@ class Penjualan extends CI_Controller
     $this->Penjualan_m->hapusDetail($id);
   }
 
+  public function hapusdetilpending($id = '')
+  {
+    $this->Penjualan_m->hapusDetailPending($id);
+  }
   public function simpanpenjualan()
   {
     $this->Penjualan_m->simpanPenjualan();
@@ -78,7 +87,12 @@ class Penjualan extends CI_Controller
     $data = $this->model->General($sql)->row_array();
     echo json_encode($data);
   }
-
+  public function hargatotalpending($id)
+  {
+    $sql = "SELECT SUM(subtotal) AS subtotal, SUM(diskon) as diskon, id_jual FROM detil_penjualan WHERE id_jual='$id'";
+    $data = $this->model->General($sql)->row_array();
+    echo json_encode($data);
+  }
   public function detailJual($id = '')
   {
     $data = array(
@@ -102,5 +116,12 @@ class Penjualan extends CI_Controller
       "aaData"  => $data
     );
     echo json_encode($json);
+  }
+
+  public function editPenjualan()
+  {
+   
+    $this->Penjualan_m->simpaneditPenjualan();
+    redirect('dpenjualan/index');
   }
 }

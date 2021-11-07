@@ -94,6 +94,25 @@ function addItemByClick() {
 	}
 }
 
+function tambahitembarang(id_jual) {
+	var qty = $('#qty').val();
+	var harga = $('#harga').val();
+	var subtotal = qty * harga;
+	var id = $('#idbarangitem').val();
+	var barcode = document.getElementById('barcode');
+
+	if (qty == "") {
+		alert('Field Tidak Boleh Kosong!')
+	} else {
+		$.ajax({
+			url: base_url + "penjualan/tambahbarangpending/" + id + '/' + qty + '/' + subtotal + '/' + harga+ '/' + id_jual,
+			type: "post",
+			success: function (data) {
+				location.reload();
+			}
+		});
+	}
+}
 function addItemByScan() {
 	var qty = 1;
 	var harga = $('#harga').val();
@@ -193,6 +212,29 @@ function editDetilItem(e) {
 	});
 	$('#editDetilModal').modal('show');
 }
+function editDetilItemPending(e) {
+	var qty = $('#detilqty');
+	var diskon = $('#detildiskonitem');
+	var subtotal = $('#detiltotalitem');
+	$.ajax({
+		url: base_url + "penjualan/detilitemjual/" + e,
+		type: "post",
+		success: function (data) {
+			var obj = JSON.parse(data);
+			$('#iddetiljual').val(obj.id_detil_jual);
+			$('#iddetilbarang').val(obj.id_barang);
+			$('#editdetilbarcode').val(obj.barcode);
+			$('#namadetilitem').val(obj.nama_barang);
+			$('#hargadetilitem').val(obj.harga_jual);
+			$('#detilqty').val(obj.qty_jual);
+			$('#hideqty').val(obj.qty_jual);
+			$('#detildiskonitem').val(obj.diskon);
+			$('#detiltotalitem').val(obj.subtotal);
+
+		}
+	});
+	$('#editDetilModal').modal('show');
+}
 
 function hapusDetilItem(e) {
 	Swal.fire({
@@ -224,6 +266,27 @@ function hapusDetilItem(e) {
 	})
 }
 
+function hapusDetilItemPending(e) {
+	Swal.fire({
+		title: "Are you sure ?",
+		text: "Deleted data can not be restored!",
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#3085d6",
+		cancelButtonColor: "#d33",
+		confirmButtonText: "Yes, delete it!"
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				url: base_url + "penjualan/hapusdetilpending/" + e,
+				type: "post",
+				success: function (data) {
+					location.reload();
+				}
+			})
+		}
+	})
+}
 function editDetilJual() {
 	var id = $('#iddetiljual').val();
 	var qty = $('#detilqty').val();
@@ -255,7 +318,31 @@ function editDetilJual() {
 		}
 	});
 }
+function editDetilJualPending() {
+	var id = $('#iddetiljual').val();
+	var qty = $('#detilqty').val();
+	var qty1 = $('#hideqty').val();
+	var diskon = $('#detildiskonitem').val();
+	var subtotal = $('#detiltotalitem').val();
+	var idBrg = $('#iddetilbarang').val();
+	$.ajax({
+		url: base_url + "penjualan/editdetiljual/" + id + '/' + diskon + '/' + qty + '/' + subtotal,
+		type: "post",
+		success: function (data) {
+			var stok = qty1 - qty;
+			updateStok(stok, idBrg);
+			LoadItemBarang();
+			$.ajax({
+				url: base_url + "penjualan/hargatotal",
+				type: "post",
+				success: function (data) {
+					location.reload();
 
+				}
+			});
+		}
+	});
+}
 function updateStok(stok, id) {
 	$.ajax({
 		url: base_url + "barang/updateStok/" + stok + '/' + id,
@@ -290,7 +377,28 @@ function simpanPenjualan() {
 	$('#pembayaranModal').modal('show');
 }
 
-function editPenjualan() {
+function editPenjualan(id) {
+	var cs = $('#customer').val();
+	var user = $('#idoperator').val();
+	$('#cus').val(cs);
+	$('#kasir').val(user);
+	$.ajax({
+		url: base_url + "penjualan/hargatotalpending/"+id,
+		type: "post",
+		success: function (data) {
+			var obj = JSON.parse(data);
+			var ppn = obj.subtotal * 10 / 100;
+			var hargaAkhir = ppn + Number(obj.subtotal);
+			$('#id_jualx').val(obj.id_jual);
+			$('#diskon1').val(obj.diskon);
+			$('#subtot').html(obj.subtotal);
+			$('#subtotal').val(obj.subtotal);
+			$('#grandtotal').val(obj.subtotal);
+			// $('#nominal_ppn').val(ppn);
+			$('#nominal').val(obj.subtotal);
+
+		}
+	});
 	$('#editPembayaranModal').modal('show');
 }
 

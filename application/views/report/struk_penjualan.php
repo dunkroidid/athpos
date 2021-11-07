@@ -17,25 +17,26 @@ $max_id = "SELECT MAX(id_jual) AS id_jual FROM penjualan";
 $id = implode($this->db->query($max_id)->row_array());
 
 if($id_resi == null){
-    $sql_general = "SELECT a.invoice, a.bayar, a.kembali, a.ppn, a.tgl, b.username, b.id_user FROM penjualan a, user b WHERE a.id_user = b.id_user AND a.id_jual = '$id'";
+    $sql_general = "SELECT a.invoice, a.bayar, a.kembali, a.ppn, date(a.tgl) as tgl, b.username, b.id_user FROM penjualan a, user b WHERE a.id_user = b.id_user AND a.id_jual = '$id'";
     $sql_detail = "SELECT b.nama_barang, a.qty_jual, a.diskon, a.subtotal FROM detil_penjualan a,  barang b
     WHERE a.id_barang = b.id_barang AND a.id_jual = '$id'";
     $sql_total = "SELECT SUM(subtotal) AS total, SUM(diskon) AS diskon FROM detil_penjualan WHERE id_jual = '$id'";
 } else {
-    $sql_general = "SELECT a.invoice, a.bayar, a.kembali, a.ppn, a.tgl, b.username, b.id_user FROM penjualan a, user b WHERE a.id_user = b.id_user AND a.id_jual = '$id_resi'";
+    $sql_general = "SELECT a.invoice, a.bayar, a.kembali, a.ppn, date(a.tgl) as tgl, b.username, b.id_user FROM penjualan a, user b WHERE a.id_user = b.id_user AND a.id_jual = '$id_resi'";
     $sql_detail = "SELECT b.nama_barang, a.qty_jual, a.diskon, a.subtotal FROM detil_penjualan a,  barang b
     WHERE a.id_barang = b.id_barang AND a.id_jual = '$id_resi'";
     $sql_total = "SELECT SUM(subtotal) AS total, SUM(diskon) AS diskon FROM detil_penjualan WHERE id_jual = '$id_resi'";
 }
+// var_dump($sql_general);
 $general = $this->db->query($sql_general)->row_array();
 $detail = $this->db->query($sql_detail)->result_array();
 $total = $this->db->query($sql_total)->row_array();
-
+$tgl=$general['tgl'];
 $pdf->SetFont('helvetica','',8);
 $pdf->Cell(70,6,'-----------------------------------------------------------------------------',0,1, 'C');
 $pdf->SetFont('helvetica','',8);
 $pdf->Cell(32,5,'NO : '.$general['invoice'],0,1, 'L');
-$pdf->Cell(32,2,$general['tgl'],0,0, 'L');
+$pdf->Cell(32,2,tgl_indo($tgl),0,0, 'L');
 $pdf->Cell(35,2,$general['id_user'].'/'.$general['username'],0,1, 'R');
 $pdf->Cell(70,6,'-----------------------------------------------------------------------------',0,1, 'C');
 

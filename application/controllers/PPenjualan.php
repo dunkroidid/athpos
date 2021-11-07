@@ -34,16 +34,23 @@ class Ppenjualan extends CI_Controller
     echo json_encode($data);
   }
 
+
     public function payment($id)
   {
     $id = decrypt_url($id);
+    $sql = "SELECT b.id_jual, a.id_detil_jual, d.barcode, d.nama_barang, d.harga_jual, a.qty_jual, a.diskon, 
+    a.subtotal, c.nama_cs FROM detil_penjualan a, penjualan b, customer c, barang d
+  WHERE b.id_jual = a.id_jual AND c.id_cs = b.id_cs AND d.id_barang = a.id_barang AND b.is_active = 0 AND b.id_jual = '$id'";
+  
+    $row = $this->model->General($sql)->result_array();
     $data = array(
       'title'    => 'Pembayaran',
       'user'     => infoLogin(),
       'toko'     => $this->db->get('profil_perusahaan')->row(),
-      'content'  => 'pendingpenjualan/payment',
+      'customer' => $this->db->get('customer')->result_array(),
+      'content'  => 'pendingpenjualan/edit',
       'val'      => $this->db->query("select a.*, sum(b.subtotal) as total from penjualan a left join detil_penjualan b on a.id_jual=b.id_jual where a.id_jual ='$id'")->row_array(),
-      // 'detail'   => $this->Piutang_m->getDetail($id)
+      'detail'  => $row
     );
     $this->load->view('templates/main', $data);
   }
