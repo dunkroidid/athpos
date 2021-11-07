@@ -4,7 +4,7 @@ $pdf->SetFont('Times','B',14);
 $pdf->Cell(0,5,'LAPORAN LABA BERSIH',0,1,'C');
 $pdf->SetFont('Times','B',11);
 
-$pdf->Cell(0,7,'Periode :'.$awal.' s/d '.$akhir,0,1,'C');
+$pdf->Cell(0,7,'Periode : '.tgl_indo($awal).' s/d '.tgl_indo($akhir),0,1,'C');
 
 $sql = "SELECT b.diskon, SUBSTRING(a.tgl, 1, 10) AS tgl, c.nama_barang, c.harga_beli, c.harga_jual, b.qty_jual, b.subtotal FROM penjualan a, detil_penjualan b, barang c WHERE a.id_jual = b.id_jual AND c.id_barang = b.id_barang AND tgl BETWEEN '$awal' AND '$akhir' AND c.id_kategori='$kategori'";
 

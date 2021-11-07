@@ -98,6 +98,7 @@ class Report extends CI_Controller
 
 	public function laba_bersih()
 	{
+		$this->data['kategori'] = $this->input->post('kategori');
 		$this->data['awal'] = $this->input->post('awal');
 		$this->data['akhir'] = $this->input->post('akhir');
 		$this->data['lain'] = $this->input->post('lain_lain');

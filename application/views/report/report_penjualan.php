@@ -4,7 +4,7 @@ $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 5, 'LAPORAN PENJUALAN', 0, 1, 'C');
 $pdf->SetFont('Times', 'B', 11);
 
-$pdf->Cell(0, 7, 'Periode :' . $awal . ' s/d ' . $akhir, 0, 1, 'C');
+$pdf->Cell(0, 7, 'Periode :' . tgl_indo($awal) . ' s/d ' . tgl_indo($akhir), 0, 1, 'C');
 $sql = "SELECT b.id_jual, b.invoice, d.nama_lengkap, c.nama_cs, SUM(a.diskon) AS diskon, SUM(a.subtotal) AS total, SUBSTRING(b.tgl, 1, 10) AS tgl, b.tgl AS waktu, SUM(a.qty_jual) AS qty FROM detil_penjualan a, penjualan b, customer c, user d, barang e  WHERE b.id_jual = a.id_jual AND c.id_cs = b.id_cs AND d.id_user = b.id_user AND b.is_active= 1 AND a.id_barang=e.id_barang AND e.id_kategori='$kategori'
 AND SUBSTRING(b.tgl, 1, 10) BETWEEN '$awal' AND '$akhir' GROUP BY a.id_jual ORDER BY tgl ASC";
 
