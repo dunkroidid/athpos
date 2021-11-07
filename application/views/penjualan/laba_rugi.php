@@ -33,6 +33,17 @@
                        </div>
                      </div>
                      <div class="form-group">
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                      <select class="form-control select2" id="kategori" name="kategori">
+                        <option> - Kategori - </option>
+                          <?php foreach($kategori as $k){?>
+                          <option value="<?php echo $k['ID_KATEGORI']?>"><?php echo $k['KATEGORI']?></option>
+                          <?php }?>
+                      </select>
+                      
+                    </div>
+                  </div>
+                     <div class="form-group">
                        <div class="col-md-12 col-sm-6 col-xs-12">
                          <button type="submit" class="btn btn-sm btn-primary btn-block"><i class="fa fa-file-pdf-o"></i> Export PDF</button>
                        </div>
@@ -66,6 +77,17 @@
                          <input type="date" id="akhir" class="form-control datepicker" name="akhir" required>
                        </div>
                      </div>
+                     <div class="form-group">
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                      <select class="form-control select2" id="kategori" name="kategori">
+                        <option> - Kategori - </option>
+                          <?php foreach($kategori as $k){?>
+                          <option value="<?php echo $k['ID_KATEGORI']?>"><?php echo $k['KATEGORI']?></option>
+                          <?php }?>
+                      </select>
+                      
+                    </div>
+                  </div>
                      <div class="form-group">
                        <div class="col-md-12 col-sm-12 col-xs-12">
                          <label for="">Biaya Lain :</label>

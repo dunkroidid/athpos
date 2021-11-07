@@ -34,11 +34,13 @@ class Laporan extends CI_Controller
    }
    public function penjualan()
    {
+      $sql="select * from kategori";
       $data = array(
          'title'    => 'Laporan Penjualan',
          'user'     => infoLogin(),
          'toko'     => $this->db->get('profil_perusahaan')->row(),
-         'content'  => 'penjualan/laporan'
+         'content'  => 'penjualan/laporan',
+         'kategori' => $this->model->General($sql)->result_array()
       );
       $this->load->view('templates/main', $data);
    }
@@ -55,11 +57,13 @@ class Laporan extends CI_Controller
 
    public function laba_rugi()
    {
+      $sql="select * from kategori";
       $data = array(
          'title'    => 'Laporan Laba Rugi',
          'user'     => infoLogin(),
          'toko'     => $this->db->get('profil_perusahaan')->row(),
-         'content'  => 'penjualan/laba_rugi'
+         'content'  => 'penjualan/laba_rugi',
+         'kategori' => $this->model->General($sql)->result_array()
       );
       $this->load->view('templates/main', $data);
    }

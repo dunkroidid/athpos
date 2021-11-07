@@ -27,6 +27,7 @@ class Report extends CI_Controller
 
 	public function penjualan()
 	{
+		$this->data['kategori'] = $this->input->post('kategori');
 		$this->data['awal'] = $this->input->post('awal');
 		$this->data['akhir'] = $this->input->post('akhir');
 		$this->data['profil'] = $this->db->get('profil_perusahaan')->row_array();
@@ -88,6 +89,7 @@ class Report extends CI_Controller
 
 	public function laba_kotor()
 	{
+		$this->data['kategori'] = $this->input->post('kategori');
 		$this->data['awal'] = $this->input->post('awal');
 		$this->data['akhir'] = $this->input->post('akhir');
 		$this->data['profil'] = $this->db->get('profil_perusahaan')->row_array();
