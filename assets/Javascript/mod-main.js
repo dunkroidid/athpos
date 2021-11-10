@@ -124,7 +124,7 @@ var tableCustomer = $('#datacustomer').DataTable({
 			bSearchable: true
 		},
 		{
-			"mDataProp": "ALAMAT",
+			"mDataProp": "JENIS_KELAMIN",
 			bSearchable: true
 		},
 		{
